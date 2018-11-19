@@ -14,16 +14,22 @@ import android.widget.Toast;
 
 public class EditDetailsActivity extends AppCompatActivity {
     private static final String TAG = EditDetailsActivity.class.getSimpleName();
-    public static final String PREFERENCE_FILE_KEY = "PowerRestPref";
-    public static final String MINUTES_KEY = "minutes";
-    public static final String SECONDS_KEY = "seconds";
-    public static final String SETS_KEY = "sets";
+    private static final String PREFERENCE_FILE_KEY = "PowerRestPref";
+    private static final String MINUTES_KEY = "minutes";
+    private static final String SECONDS_KEY = "seconds";
+    private static final String SETS_KEY = "sets";
 
-    private int minutes = 0;
-    private int seconds = 0;
-    Integer sets;
+    private static int DEFAULT_MINUTES = 3;
+    private static int DEFAULT_SECONDS = 0;
+    private static Integer DEFAULT_SETS = 3;
+
+    private int minutes = DEFAULT_MINUTES;
+    private int seconds = DEFAULT_SECONDS;
+    private Integer sets = DEFAULT_SETS;
     private SharedPreferences sharedPreferences;
-    EditText numberOfSetEditText;
+    private EditText numberOfSetEditText;
+    private NumberPicker minutePicker;
+    private NumberPicker secondPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +37,8 @@ public class EditDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_details);
 
         // find views
-        NumberPicker minutePicker = findViewById(R.id.minutes_numberpicker);
-        final NumberPicker secondPicker = findViewById(R.id.seconds_numberpicker);
+        minutePicker = findViewById(R.id.minutes_numberpicker);
+        secondPicker = findViewById(R.id.seconds_numberpicker);
         numberOfSetEditText = findViewById(R.id.sets_number_edittext);
 
         // get shared preferences
@@ -78,6 +84,14 @@ public class EditDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.reset_action:
+                minutes = DEFAULT_MINUTES;
+                seconds = DEFAULT_SECONDS;
+                sets = DEFAULT_SETS;
+                minutePicker.setValue(minutes);
+                secondPicker.setValue(seconds);
+                numberOfSetEditText.setText(sets.toString());
+                return true;
             case R.id.save_action:
                 String setsString = numberOfSetEditText.getText().toString();
                 if (TextUtils.isEmpty(setsString)) {
@@ -93,6 +107,7 @@ public class EditDetailsActivity extends AppCompatActivity {
                 editor.apply();
                 finish();
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

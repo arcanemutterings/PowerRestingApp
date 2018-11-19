@@ -6,7 +6,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,10 +111,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.edit_menu_item:
+            case R.id.edit_action:
                 Intent intent = new Intent(MainActivity.this, EditDetailsActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 return true;
+
+            case R.id.reset_action:
+                this.recreate();
         }
 
         return super.onOptionsItemSelected(item);
@@ -125,9 +127,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // restart activity
         if (requestCode == REQUEST_CODE) {
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+            this.recreate();
         }
     }
 
@@ -170,6 +170,5 @@ public class MainActivity extends AppCompatActivity {
         view.setVisibility(View.GONE);
         view.setVisibility(View.VISIBLE);
     }
-
 
 }
